@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-
+<link rel="stylesheet" href="/public/css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" >
@@ -8,11 +9,43 @@
 </head>
 
 <body>
-    <h1>The Home Page</h1>
-    <p>Paragraph 1</p>
-    <p>Paragraph 2</p>
-    <p>Paragraph 3</p>
-    <p>Paragraph 4</p>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+          <h1 class="display-4">India Agricultural Marketplace</h1>
+          <p class="lead">To create a buy or sell request, select 'Create Order'</p>
+          <p class="lead">To view open orders select an agricultural product, or select 'Open Orders'</p>
+          <p class="lead">To view recent transactions, select 'Closed Orders'</p>
+        </div>
+      </div>
+    <br>
+    <div class="container" style="margin: auto;">
+        <button type="button" class="btn btn-outline-dark">Create Order</button>
+        <button type="button" class="btn btn-outline-dark">Open Orders</button>
+        <button type="button" class="btn btn-outline-dark">Closed Orders</button>
+    </div>
+    <hr>
+    <table class="table" style="width:80%; margin-left: auto; margin-right: auto;">
+        <thead class="thead-dark">
+        <tr>
+           <th scope="row">#</th>
+           <th scope="row">Product</th>
+           <th scope="row">Tonnes Produced*</th>
+           <th scope="row">World Ranking*</th>
+        </tr>
+        </thead>
+        <% for (var i = 0; i < agTable.length;  i++) { %>
+         <tr>
+           <th scope="row"><%= i+1 %></td>
+            <td><%= agTable[i].name %></td>
+           <td><%= agTable[i].tonnes %></td>
+           <td><%= agTable[i].rank %></td>
+         </tr>    
+        <% } %>
+     </table>
+
+     <div class="container" style="margin: auto;">
+        <p> *India 2018. Source: http://www.fao.org/faostat/en/#data</p>
+     </div>
 </body>
 
 
