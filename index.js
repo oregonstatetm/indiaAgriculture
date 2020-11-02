@@ -204,6 +204,10 @@ app.get('/create', (req, res) => {
     res.render('create.ejs')
 })
 
+app.get('/index', (req, res) => {
+    res.render('index.ejs')
+})
+
 app.listen(port, function() {
     console.log("Server started");
 })
