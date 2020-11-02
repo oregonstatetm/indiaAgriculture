@@ -117,6 +117,22 @@ app.get('/', (req,res) => {
     res.render('home.ejs')
 })
 
+app.get('/register', (req, res) => {
+    res.render('register.ejs')
+})
+
+app.get('/open', (req, res) => {
+    res.render('open.ejs')
+})
+
+app.get('/closed', (req, res) => {
+    res.render('closed.ejs')
+})
+
+app.get('/create', (req, res) => {
+    res.render('create.ejs')
+})
+
 app.listen(port, function() {
     console.log("Server started");
 })
