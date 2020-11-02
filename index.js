@@ -6,6 +6,77 @@ app.use(express.static(__dirname + '/public'));
 
 app.set('view engine', 'ejs');
 
+
+app.locals.openOrders = [{
+    "orderID" : 55,
+    "product" : "Bananas",
+    "type" : "Buy",
+    "amount" : 14,
+    "price" : 4000,
+    "status" : "open",
+    "date" : "11-1-2020",
+    "sellerID" : "",
+    "buyerID" : "422"
+},
+{
+    "orderID" : 51,
+    "product" : "Wheat",
+    "type" : "Sell",
+    "amount" : 145,
+    "price" : 250,
+    "status" : "open",
+    "date" : "10-28-2020",
+    "sellerID" : "333",
+    "buyerID" : ""
+},
+{
+    "orderID" : 50,
+    "product" : "Fresh Fruit",
+    "type" : "Sell",
+    "amount" : 4,
+    "price" : 1000,
+    "status" : "open",
+    "date" : "10-27-2020",
+    "sellerID" : "2110",
+    "buyerID" : ""
+}
+]
+
+app.locals.closedOrders = [{
+    "orderID" : 1,
+    "product" : "Sugar Cane",
+    "type" : "Buy",
+    "amount" : 6,
+    "price" : 7000,
+    "status" : "closed",
+    "date" : "01-01-2020",
+    "sellerID" : "151",
+    "buyerID" : "111"
+},
+{
+    "orderID" : 2,
+    "product" : "Buffalo Milk",
+    "type" : "Sell",
+    "amount" : 28,
+    "price" : 1000,
+    "status" : "closed",
+    "date" : "01-01-2020",
+    "sellerID" : "100",
+    "buyerID" : "57"
+},
+{
+    "orderID" : 3,
+    "product" : "Tomaotes",
+    "type" : "Buy",
+    "amount" : 200,
+    "price" : 107,
+    "status" : "closed",
+    "date" : "01-02-2020",
+    "sellerID" : "98",
+    "buyerID" : "231"
+}
+]
+
 app.locals.agTable = [{
     "name": "Sugar Cane",
     "tonnes": 376900000,

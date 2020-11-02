@@ -24,6 +24,37 @@
         <a href="/register" type="button" class="btn btn-outline-dark">Register</a>
     </div>
     <hr>
+
+    <table class="table" style="width:80%; margin-left: auto; margin-right: auto;">
+        <thead class="thead-dark">
+        <tr>
+           <th scope="row">OrderID</th>
+           <th scope="row">Agricultural Product</th>
+           <th scope="row">Type</th>
+           <th scope="row">Amount</th>
+           <th scope="row">Price</th>
+           <th scope="row">Status</th>
+           <th scope="row">Date</th>
+           <th scope="row">Seller-ID</th>
+           <th scope="row">Buyer-ID</th>
+        </tr>
+        </thead>
+        <% for (var i = 0; i < openOrders.length;  i++) { %>
+         <tr>
+           <th scope="row"><%= openOrders[i].orderID %></td>
+           <td><%= openOrders[i].product %></td>
+           <td><%= openOrders[i].type %></td>
+           <td><%= openOrders[i].amount %></td>
+           <td><%= openOrders[i].price %></td>
+           <td><%= openOrders[i].status %></td>
+           <td><%= openOrders[i].date %></td>
+           <td><%= openOrders[i].sellerID %></td>
+           <td><%= openOrders[i].buyerID %></td>
+         </tr>    
+        <% } %>
+     </table>
+
+
 </body>
 
 
