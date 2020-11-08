@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="/public/css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" >
+    <title>Admin</title>
+</head>
+
+
+<body>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+          <h1 class="display-4">Admin Page</h1>
+        </div>
+      </div>
+    <br>
+    <div class="container" style="margin: auto;">
+        <a href="/" type="button" class="btn btn-outline-dark">Home</a>
+        <a href="/create" type="button" class="btn btn-outline-dark">Create Order</a>
+        <a href="/open" type="button" class="btn btn-outline-dark">Open Orders</a>
+        <a href="/closed" type="button" class="btn btn-outline-dark">Closed Orders</a>
+        <a href="/register" type="button" class="btn btn-outline-dark">Register</a>
+        <a href="/about" type="button" class="btn btn-outline-dark">About</a>
+        <a href="/admin" type="button" class="btn btn-outline-dark">Admin</a>
+    </div>
+    <hr>
+
+    <table class="table" style="width:80%; margin-left: auto; margin-right: auto;">
+        <thead class="thead-dark">
+        <tr>
+           <th scope="row">OrderID</th>
+           <th scope="row">Agricultural Product</th>
+           <th scope="row">Type</th>
+           <th scope="row">Amount</th>
+           <th scope="row">Price</th>
+           <th scope="row">Status</th>
+           <th scope="row">Date</th>
+           <th scope="row">Seller-ID</th>
+           <th scope="row">Buyer-ID</th>
+           <th scope="row">Update</th>
+           <th scope="row">Delete</th>
+        </tr>
+        </thead>
+        <% for (var i = 0; i < allOrders.length;  i++) { %>
+         <tr>
+           <th scope="row"><%= allOrders[i].orderID %></td>
+           <td><%= allOrders[i].product %></td>
+           <td><%= allOrders[i].type %></td>
+           <td><%= allOrders[i].amount %></td>
+           <td><%= allOrders[i].price %></td>
+           <td><%= allOrders[i].status %></td>
+           <td><%= allOrders[i].date %></td>
+           <td><%= allOrders[i].sellerID %></td>
+           <td><%= allOrders[i].buyerID %></td>
+           <td><button type="submit" class="btn btn-primary">Update</button></td>
+           <td><button type="submit" class="btn btn-primary">Delete</button></td>
+         </tr>    
+        <% } %>
+     </table>
+<hr>
+<div class="container">
+<form>
+  <div class="form-group">
+    <label for="addProduct">Add Agricultural Product</label>
+    <input type="text" class="form-control" id="addProduct" placeholder="">
+  </div>
+<button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+</div>
+
+</body>
+
+
+</html>
