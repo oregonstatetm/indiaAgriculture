@@ -1,11 +1,13 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
+const mysql = require('./dbcon.js');
 
 app.use(express.static(__dirname + '/public'));
 
 app.set('view engine', 'ejs');
 //here I will add the mysql pool to work with the tables.
+app.set('mysql',mysql);
 
 app.locals.openOrders = [{
     "orderID" : 55,
