@@ -285,6 +285,17 @@ app.get('/about', (req, res) => {
     res.render('about.ejs')
 })
 
+app.use(function(req,res){
+	res.status(404);
+	res.render('404.ejs');
+});
+
+app.use(function(err,req,res,next){
+	console.err(err.stack);
+	res.status(500);
+	res.render('500.ejs');
+});
+
 app.listen(port, function() {
     console.log("Server started");
-})
+});
