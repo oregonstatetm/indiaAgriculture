@@ -27,18 +27,18 @@
     </div>
     <hr>
     <div class="container" style="margin: auto;">
-    <form>
+    <form action='/' method= "post">
         <div class="form-group">
-          <label for="inputEmail">Email address</label>
-          <input type="email" class="form-control" id="inputEmail" placeholder="Enter email">
+	  	<label for="inputEmail"> Email address:</label>
+          <input type="email" class="form-control" name ="inputEmail" id="inputEmail" placeholder="Enter email">
         </div>
         <div class="form-group">
-            <label for="inputName">Name</label>
-            <input type="text" class="form-control" id="inputName" placeholder="Enter name">
-          </div>
+		<label for="inputName">Name:</label>
+            <input type="text" class="form-control" name="inputName" id="inputName" placeholder="Enter name">
+        </div>
         <div class="form-group">
             <label for="registerType">Type</label>
-            <select class="form-control" id="registerType">
+            <select class="form-control" name ="registerType" id="registerType">
               <option>Buyer</option>
               <option>Seller</option>
             </select>
