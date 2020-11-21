@@ -1,13 +1,15 @@
-const express = require('express');
-const app = express();
-const port = process.env.PORT || 3000;
-const mysql = require('./dbcon.js');
+var express = require('express');
+var router = express.Router();
+var app = express();
+var port = process.env.PORT || 3000;
+var mysql = require('./dbcon.js');
+var bodyParser = require('body-parser');
 
 app.use(express.static(__dirname + '/public'));
-
+app.use(bodyParser.urlencoded({extended:true}));
 app.set('view engine', 'ejs');
 //here I will add the mysql pool to work with the tables.
-app.set('mysql',mysql);
+//app.set('mysql',mysql);
 
 app.locals.openOrders = [{
     "orderID" : 55,
@@ -279,11 +281,86 @@ app.get('/index', (req, res) => {
 
 app.get('/admin', (req, res) => {
     res.render('admin.ejs')
-})
+});
 
 app.get('/about', (req, res) => {
     res.render('about.ejs')
-})
+});
+
+app.post('/',function(req,res){
+	if(req.body.registerType == "Buyer"){
+		sql = "INSERT INTO Buyers (Name,Email) VALUES (?,?)";
+	}
+	else if(req.body.registerType == "Seller"){
+		sql = "INSERT INTO Sellers (Name,Email) VALUES (?,?)";
+	}
+	mysql.pool.query(sql,[req.body.inputName,req.body.inputEmail],function(error,results,fields){
+		if(error){
+			res.write(JSON.stringify(error));
+			res.end();
+		}
+		else{
+			res.redirect('/register');
+		}
+	});
+});
+
+function getDetails(res,Name,context){
+	sql = "SELECT Product_ID , Wholesale_Price FROM Agricultural_Products WHERE Name = ?";
+	mysql.pool.query(sql,[Name],function(error,result,fields){
+		if(error){
+			res.write(JSON.stringify(error));
+			res.end();
+		}
+		context = JSON.parse(JSON.stringify(result));
+		console.log(context); //Data saved as context[0].Product_ID and context[0].Wholesale_Price 
+		//How to send this data back to the function where we need to add.
+	});
+}
+function getID(res,table,Name,context){
+	var ID_N = 0
+	if (table == "Seller"){
+		sql = "SELECT ID FROM Sellers WHERE Name = ?";
+	}
+	else{
+		sql = "SELECT ID FROM Buyers WHERE Name = ?";
+	}	
+	mysql.pool.query(sql,[Name],function(error,results,fields){
+		if(error){
+			res.write(JSON.stringify(error));
+			res.end();
+		}
+		console.log("getting ID");
+		context = JSON.parse(JSON.stringify(results));
+		console.log(context); 	//Here is the data , the ID we got back from the buyers and Sellers table. saved the value as context[0].ID
+	});
+}
+
+app.post('/create_order',function(req,res){
+	var context = {}
+	var Type = ""
+	if(req.body.OrderType == "Buyer"){
+		sql = "INSERT INTO Orders (Product_ID, OrderType,Amount,Price,Buyer_ID) VALUES (?,?,?,?,?)";
+		con = getID(res,"Buyer",req.body.UserName,context);
+		Type = "Buy";
+	}	
+	else{
+		sql = "INSERT INTO Orders (Product_ID, OrderType,Amount,Price,Seller_ID) VALUES (?,?,?,?,?)";
+		con = getID(res,"Seller",req.body.UserName);
+		Type = "Sell"
+	}
+	getDetails(res,req.body.agriculturalProduct);	
+	mysql.pool.query(sql,[("Adding the variable of ID we get back"), Type, req.body.OrderAmount,("Adding the variable of Price we get backA"),("Adding the Seller/Buyer-ID got back")],function(error,results,fields){
+		if(error){
+			res.write(JSON.stringify(error));
+			res.end();
+		}
+		else{
+			res.redirect('/create');
+		}
+	
+	});
+});
 
 app.use(function(req,res){
 	res.status(404);
@@ -291,7 +368,7 @@ app.use(function(req,res){
 });
 
 app.use(function(err,req,res,next){
-	console.err(err.stack);
+	console.error(err.stack);
 	res.status(500);
 	res.render('500.ejs');
 });
