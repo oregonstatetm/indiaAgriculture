@@ -37,14 +37,16 @@
            <th scope="row">Product</th>
            <th scope="row">Tonnes Produced*</th>
            <th scope="row">World Ranking*</th>
+           <th scope="row">Wholesale Price*</th>
         </tr>
         </thead>
         <% for (var i = 0; i < agTable.length;  i++) { %>
          <tr>
            <th scope="row"><%= i+1 %></td>
-            <td><%= agTable[i].name %></td>
-           <td><%= agTable[i].tonnes %></td>
-           <td><%= agTable[i].rank %></td>
+            <td><%= agTable[i].Name %></td>
+           <td><%= agTable[i].Tons_Produced %></td>
+           <td><%= agTable[i].World_Ranking %></td>
+           <td><%= agTable[i].Wholesale_Price %> Rs</td>
          </tr>    
         <% } %>
      </table>

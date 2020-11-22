@@ -45,15 +45,15 @@
         </thead>
         <% for (var i = 0; i < allOrders.length;  i++) { %>
          <tr>
-           <th scope="row"><%= allOrders[i].orderID %></td>
-           <td><%= allOrders[i].product %></td>
-           <td><%= allOrders[i].type %></td>
-           <td><%= allOrders[i].amount %></td>
-           <td><%= allOrders[i].price %></td>
-           <td><%= allOrders[i].status %></td>
-           <td><%= allOrders[i].date %></td>
-           <td><%= allOrders[i].sellerID %></td>
-           <td><%= allOrders[i].buyerID %></td>
+           <th scope="row"><%= allOrders[i].Order_ID %></td>
+           <td><%= allOrders[i].Product_ID %></td>
+           <td><%= allOrders[i].OrderType %></td>
+           <td><%= allOrders[i].Amount %></td>
+           <td><%= allOrders[i].Price %></td>
+           <td><%= allOrders[i].Status %></td>
+           <td><%= allOrders[i].OrderDate %></td>
+           <td><%= allOrders[i].Seller_ID %></td>
+           <td><%= allOrders[i].Buyer_ID %></td>
            <td><button type="submit" class="btn btn-primary">Update</button></td>
            <td><button type="submit" class="btn btn-primary">Delete</button></td>
          </tr>    

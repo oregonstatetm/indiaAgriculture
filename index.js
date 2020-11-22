@@ -9,8 +9,17 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({extended:true}));
 app.set('view engine', 'ejs');
 //here I will add the mysql pool to work with the tables.
-//app.set('mysql',mysql);
+app.set('mysql',mysql);
 
+// Local Variables Passed to All Routes and used in SELECT queries
+app.locals.agTable=[];
+app.locals.openOrders = [];
+app.locals.closedOrders = [];
+app.locals.allOrders = [];
+app.locals.buyers = [];
+app.locals.sellers = [];
+
+/*
 app.locals.openOrders = [{
     "orderID" : 55,
     "product" : "Bananas",
@@ -147,128 +156,50 @@ app.locals.allOrders =[{
     "sellerID" : "98",
     "buyerID" : "231"
 }]
-
-app.locals.agTable = [{
-    "name": "Sugar Cane",
-    "tonnes": 376900000,
-    "rank": 2},
-{
-    "name": "Rice Paddy",
-    "tonnes": 172580000,
-    "rank": 2},
-{
-    "name": "Rice Milled",
-    "tonnes": 115110860,
-    "rank": 2},
-{
-    "name": "Wheat",
-    "tonnes": 99700000,
-    "rank": 2},
-{
-    "name": "Buffalo Milk",
-    "tonnes": 91817140,
-    "rank": 1},
-{
-    "name": "Cow Milk",
-    "tonnes": 89833590,
-    "rank": 2},
-{
-    "name": "Potatoes",
-    "tonnes": 48529000,
-    "rank": 2},
-{
-    "name": "Fresh Vegetables",
-    "tonnes": 34430087,
-    "rank": 2},
-{
-    "name": "Bananas",
-    "tonnes": 30808000,
-    "rank": 1},
-{
-    "name": "Maize",
-    "tonnes": 27820000,
-    "rank": 7},
-{
-    "name": "Dry Onions",
-    "tonnes": 22071000,
-    "rank": 2},
-{
-    "name": "Mangoes/Guavas ",
-    "tonnes": 21822000,
-    "rank": 1},
-{
-    "name": "Tomatoes",
-    "tonnes": 19377000,
-    "rank": 2},
-{
-    "name": "Seed Cotton",
-    "tonnes": 14657000,
-    "rank": 2},
-{
-    "name": "Soybeans",
-    "tonnes": 13786000,
-    "rank": 5},
-{
-    "name": "Eggplants",
-    "tonnes": 12826000,
-    "rank": 2},
-{
-    "name": "Coconuts",
-    "tonnes": 11706343,
-    "rank": 3},
-{
-    "name": "Millet",
-    "tonnes": 11640000,
-    "rank": 1},
-{
-    "name": "Chick Peas",
-    "tonnes": 11380000,
-    "rank": 1},
-{
-    "name": "Fresh Fruit",
-    "tonnes": 10043008,
-    "rank": 1},
-{
-    "name": "Tropical Fruit",
-    "tonnes": 5916000,
-    "rank": 1},
-{
-    "name": "Pumpkins, Squash and Gourds",
-    "tonnes": 5569809,
-    "rank": 2},
-{
-    "name": "Green Peas",
-    "tonnes": 5430000,
-    "rank": 2},
-{
-    "name": "Chillies & Peppers Dry",
-    "tonnes": 1808011,
-    "rank": 1},
-{
-    "name": "Lentils",
-    "tonnes": 1620000,
-    "rank": 2},
-{
-    "name": "Tea",
-    "tonnes": 1344827,
-    "rank": 2},
-
-];
+*/
 
 app.get('/', (req,res) => {
-    res.render('home.ejs')
-})
+    var callbackCount = 0;
+
+    getAgriculturalProducts(res, complete);
+
+    function complete(){
+        callbackCount++;
+        if(callbackCount >=1){
+            res.render('home');
+        }
+
+    }
+});
 
 app.get('/register', (req, res) => {
     res.render('register.ejs')
 })
 
 app.get('/open', (req, res) => {
-    res.render('open.ejs')
-})
+    var callbackCount = 0;
+
+    getOpenOrders(res, complete);
+
+    function complete(){
+        callbackCount++;
+        if(callbackCount >=1){
+            res.render('open');
+        }
+    }
+});
 
 app.get('/closed', (req, res) => {
-    res.render('closed.ejs')
+    var callbackCount = 0;
+
+    getClosedOrders(res, complete);
+
+    function complete(){
+        callbackCount++;
+        if(callbackCount >=1){
+            res.render('closed');
+        }
+    }
 })
 
 app.get('/create', (req, res) => {
@@ -280,7 +211,18 @@ app.get('/index', (req, res) => {
 })
 
 app.get('/admin', (req, res) => {
-    res.render('admin.ejs')
+    var callbackCount = 0;
+
+    getBuyers(res, complete);
+    getSellers(res, complete);
+    getOrders(res,complete);
+
+    function complete(){
+        callbackCount++;
+        if(callbackCount >=3){
+            res.render('admin');
+        }
+    }
 });
 
 app.get('/about', (req, res) => {
@@ -304,6 +246,92 @@ app.post('/',function(req,res){
 		}
 	});
 });
+
+//Get Agricultural Products to populate the table on /home
+function getAgriculturalProducts(res, complete){
+    sql="SELECT Name, Tons_Produced, World_Ranking, Wholesale_Price FROM Agricultural_Products";
+    mysql.pool.query(sql, function (error,results,fields){
+        if(error){
+            res.write(JSON.stringify(error));
+            res.end();
+        }
+        app.locals.agTable=results;
+        //console.log("ROWDATAPACKET");
+        //console.log(results[0].Name);
+        complete();
+
+    })
+};
+
+//Get Buyers to populate the table on /admin
+function getBuyers(res, complete){
+    sql="SELECT ID, Name, Email FROM Buyers";
+    mysql.pool.query(sql, function (error,results,fields){
+        if(error){
+            res.write(JSON.stringify(error));
+            res.end();
+        }
+        app.locals.buyers=results;
+        complete();
+
+    });
+}
+
+//Get Sellers to populate the table on /admin
+function getSellers(res, complete){
+    sql="SELECT ID, Name, Email FROM Sellers";
+    mysql.pool.query(sql, function (error,results,fields){
+        if(error){
+            res.write(JSON.stringify(error));
+            res.end();
+        }
+        app.locals.sellers=results;
+        complete();
+
+    });
+}
+
+//Get Orders to populate the table on /Admin
+function getOrders(res, complete){
+    sql="SELECT Order_ID, Product_ID, OrderType, Amount, Price, Status, OrderDate, Seller_ID, Buyer_ID FROM Orders";
+    mysql.pool.query(sql, function (error,results,fields){
+        if(error){
+            res.write(JSON.stringify(error));
+            res.end();
+        }
+        app.locals.allOrders=results;
+        complete();
+
+    });
+}
+
+//Get Open Orders to populate the table on /OpenOrders
+function getOpenOrders(res, complete){
+    sql="SELECT Order_ID, Product_ID, OrderType, Amount, Price, Status, OrderDate, Seller_ID, Buyer_ID FROM Orders WHERE OrderType = 'Buy'";
+    mysql.pool.query(sql, function (error,results,fields){
+        if(error){
+            res.write(JSON.stringify(error));
+            res.end();
+        }
+        app.locals.openOrders=results;
+        complete();
+
+    });
+}
+
+//Get Closed Orders to populate the table on /OpenOrders
+function getClosedOrders(res, complete){
+    sql="SELECT Order_ID, Product_ID, OrderType, Amount, Price, Status, OrderDate, Seller_ID, Buyer_ID FROM Orders WHERE OrderType = 'Sell'";
+    mysql.pool.query(sql, function (error,results,fields){
+        if(error){
+            res.write(JSON.stringify(error));
+            res.end();
+        }
+        app.locals.closedOrders=results;
+        complete();
+
+    });
+}
 
 function getDetails(res,Name,context){
 	sql = "SELECT Product_ID , Wholesale_Price FROM Agricultural_Products WHERE Name = ?";

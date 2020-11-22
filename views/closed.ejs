@@ -42,15 +42,15 @@
         </thead>
         <% for (var i = 0; i < closedOrders.length;  i++) { %>
          <tr>
-           <th scope="row"><%= closedOrders[i].orderID %></td>
-           <td><%= closedOrders[i].product %></td>
-           <td><%= closedOrders[i].type %></td>
-           <td><%= closedOrders[i].amount %></td>
-           <td><%= closedOrders[i].price %></td>
-           <td><%= closedOrders[i].status %></td>
-           <td><%= closedOrders[i].date %></td>
-           <td><%= closedOrders[i].sellerID %></td>
-           <td><%= closedOrders[i].buyerID %></td>
+           <th scope="row"><%= closedOrders[i].Order_ID %></td>
+           <td><%= closedOrders[i].Product_ID %></td>
+           <td><%= closedOrders[i].OrderType %></td>
+           <td><%= closedOrders[i].Amount %></td>
+           <td><%= closedOrders[i].Price %></td>
+           <td><%= closedOrders[i].Status %></td>
+           <td><%= closedOrders[i].OrderDate %></td>
+           <td><%= closedOrders[i].Seller_ID %></td>
+           <td><%= closedOrders[i].Buyer_ID %></td>
          </tr>    
         <% } %>
      </table>

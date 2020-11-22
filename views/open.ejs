@@ -43,15 +43,15 @@
         </thead>
         <% for (var i = 0; i < openOrders.length;  i++) { %>
          <tr>
-           <th scope="row"><%= openOrders[i].orderID %></td>
-           <td><%= openOrders[i].product %></td>
-           <td><%= openOrders[i].type %></td>
-           <td><%= openOrders[i].amount %></td>
-           <td><%= openOrders[i].price %></td>
-           <td><%= openOrders[i].status %></td>
-           <td><%= openOrders[i].date %></td>
-           <td><%= openOrders[i].sellerID %></td>
-           <td><%= openOrders[i].buyerID %></td>
+          <th scope="row"><%= openOrders[i].Order_ID %></td>
+            <td><%= openOrders[i].Product_ID %></td>
+            <td><%= openOrders[i].OrderType %></td>
+            <td><%= openOrders[i].Amount %></td>
+            <td><%= openOrders[i].Price %></td>
+            <td><%= openOrders[i].Status %></td>
+            <td><%= openOrders[i].OrderDate %></td>
+            <td><%= openOrders[i].Seller_ID %></td>
+            <td><%= openOrders[i].Buyer_ID %></td>
          </tr>    
         <% } %>
      </table>
