@@ -3,11 +3,11 @@ var router = express.Router();
 var app = express();
 var mysql = require('./dbcon.js');
 var bodyParser = require('body-parser');
+var port = process.env.PORT || 3000;
 
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({extended:true}));
 app.set('view engine', 'ejs');
-app.set('port', process.argv[2]);
 
 //here I will add the mysql pool to work with the tables.
 app.set('mysql',mysql);
@@ -25,7 +25,7 @@ app.get('/', (req,res) => {
     var callbackCount = 0;
     res.render('home');
 
-    /*getAgriculturalProducts(res, complete);
+    getAgriculturalProducts(res, complete);
 
     function complete(){
         callbackCount++;
@@ -34,7 +34,7 @@ app.get('/', (req,res) => {
         }
 
     }
-    */
+    
 });
 
 app.get('/register', (req, res) => {
@@ -121,8 +121,6 @@ function getAgriculturalProducts(res, complete){
             res.end();
         }
         app.locals.agTable=results;
-        //console.log("ROWDATAPACKET");
-        //console.log(results[0].Name);
         complete();
 
     })
@@ -266,6 +264,6 @@ app.use(function(err,req,res,next){
 	res.render('500.ejs');
 });
 
-app.listen(PORT, () => {
-    console.log(`Our app is running on port ${ PORT }`);
+app.listen(port, () => {
+    console.log(`Our app is running on port ${ port }`);
 });
