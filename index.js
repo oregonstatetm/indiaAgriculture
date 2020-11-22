@@ -1,7 +1,10 @@
 var express = require('express');
 var router = express.Router();
 var app = express();
-var port = process.env.PORT || 3000;
+let port = process.env.PORT;
+if (port == null || port == "") {
+    port = 3000;
+}
 var mysql = require('./dbcon.js');
 var bodyParser = require('body-parser');
 
@@ -265,6 +268,6 @@ app.use(function(err,req,res,next){
 	res.render('500.ejs');
 });
 
-app.listen(port, function() {
-    console.log("Server started");
+app.listen(app.get('port'), function () {
+    console.log('Express started on http://localhost:' + app.get('port') + '; press Ctrl-C to terminate.');
 });
