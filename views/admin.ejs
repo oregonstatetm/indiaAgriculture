@@ -70,7 +70,52 @@
 </form>
 
 </div>
-
+<hr>
+<div class="container">
+  <table class="table" style="width:80%; margin-left: auto; margin-right: auto;">
+      <thead class="thead-dark">
+      <tr>
+         <th scope="row">BuyerID</th>
+         <th scope="row">Buyer Name</th>
+         <th scope="row">Email</th>
+         <th scope="row">Update</th>
+         <th scope="row">Delete</th>
+      </tr>
+      </thead>
+      <% for (var i = 0; i < buyers.length;  i++) { %>
+       <tr>
+         <th scope="row"><%= buyers[i].ID %></td>
+         <td><%= buyers[i].Name %></td>
+         <td><%= buyers[i].Email %></td>
+         <td><button type="submit" class="btn btn-primary">Update</button></td>
+         <td><button type="submit" class="btn btn-primary">Delete</button></td>
+       </tr>    
+      <% } %>
+   </table>
+</div>
+<hr>
+<div class="container">
+  <table class="table" style="width:80%; margin-left: auto; margin-right: auto;">
+      <thead class="thead-dark">
+      <tr>
+         <th scope="row">SellerID</th>
+         <th scope="row">Seller Name</th>
+         <th scope="row">Email</th>
+         <th scope="row">Update</th>
+         <th scope="row">Delete</th>
+      </tr>
+      </thead>
+      <% for (var i = 0; i < sellers.length;  i++) { %>
+       <tr>
+         <th scope="row"><%= sellers[i].ID %></td>
+         <td><%= sellers[i].Name %></td>
+         <td><%= sellers[i].Email %></td>
+         <td><button type="submit" class="btn btn-primary">Update</button></td>
+         <td><button type="submit" class="btn btn-primary">Delete</button></td>
+       </tr>    
+      <% } %>
+   </table>
+</div>
 </body>
 
 
