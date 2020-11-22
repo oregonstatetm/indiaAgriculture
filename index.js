@@ -92,7 +92,7 @@ app.get('/admin', (req, res) => {
 app.get('/about', (req, res) => {
     res.render('about.ejs')
 });
-/*
+
 app.post('/',function(req,res){
 	if(req.body.registerType == "Buyer"){
 		sql = "INSERT INTO Buyers (Name,Email) VALUES (?,?)";
@@ -110,7 +110,7 @@ app.post('/',function(req,res){
 		}
 	});
 });
-*/
+
 //Get Agricultural Products to populate the table on /home
 function getAgriculturalProducts(res, complete){
     sql="SELECT Name, Tons_Produced, World_Ranking, Wholesale_Price FROM Agricultural_Products";
@@ -196,7 +196,7 @@ function getClosedOrders(res, complete){
 
     });
 }
-/*
+
 function getDetails(res,Name,context){
 	sql = "SELECT Product_ID , Wholesale_Price FROM Agricultural_Products WHERE Name = ?";
 	mysql.pool.query(sql,[Name],function(error,result,fields){
@@ -253,7 +253,7 @@ app.post('/create_order',function(req,res){
 	
 	});
 });
-*/
+
 app.use(function(req,res){
 	res.status(404);
 	res.render('404.ejs');
