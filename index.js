@@ -22,8 +22,9 @@ app.locals.sellers = [];
 
 app.get('/', (req,res) => {
     var callbackCount = 0;
+    res.render('home');
 
-    getAgriculturalProducts(res, complete);
+    /*getAgriculturalProducts(res, complete);
 
     function complete(){
         callbackCount++;
@@ -32,6 +33,7 @@ app.get('/', (req,res) => {
         }
 
     }
+    */
 });
 
 app.get('/register', (req, res) => {
