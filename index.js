@@ -1,13 +1,14 @@
 var express = require('express');
 var router = express.Router();
 var app = express();
-const PORT = process.env.PORT || 3000;
 var mysql = require('./dbcon.js');
 var bodyParser = require('body-parser');
 
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({extended:true}));
 app.set('view engine', 'ejs');
+app.set('port', process.argv[2]);
+
 //here I will add the mysql pool to work with the tables.
 app.set('mysql',mysql);
 
