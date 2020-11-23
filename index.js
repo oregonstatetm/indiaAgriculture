@@ -19,18 +19,18 @@ app.locals.closedOrders = [];
 app.locals.allOrders = [];
 app.locals.buyers = [];
 app.locals.sellers = [];
-
+app.locals.ag_s = [];
+app.locals.id = [];
 
 app.get('/', (req,res) => {
     var callbackCount = 0;
-    res.render('home');
 
     getAgriculturalProducts(res, complete);
 
     function complete(){
         callbackCount++;
         if(callbackCount >=1){
-            res.render('home');
+            res.render('home.ejs');
         }
 
     }
@@ -196,19 +196,19 @@ function getClosedOrders(res, complete){
     });
 }
 
-function getDetails(res,Name,context){
+function getDetails(res,Name,context,complete){
 	sql = "SELECT Product_ID , Wholesale_Price FROM Agricultural_Products WHERE Name = ?";
-	mysql.pool.query(sql,[Name],function(error,result,fields){
+	mysql.pool.query(sql,[Name],function(error,results,fields){
 		if(error){
 			res.write(JSON.stringify(error));
 			res.end();
 		}
-		context = JSON.parse(JSON.stringify(result));
-		console.log(context); //Data saved as context[0].Product_ID and context[0].Wholesale_Price 
-		//How to send this data back to the function where we need to add.
+		context = JSON.parse(JSON.stringify(results));
+		app.locals.ag_s = context;
+		complete();
 	});
 }
-function getID(res,table,Name,context){
+function getID(res,table,Name,context,complete){
 	var ID_N = 0
 	if (table == "Seller"){
 		sql = "SELECT ID FROM Sellers WHERE Name = ?";
@@ -223,34 +223,60 @@ function getID(res,table,Name,context){
 		}
 		console.log("getting ID");
 		context = JSON.parse(JSON.stringify(results));
-		console.log(context); 	//Here is the data , the ID we got back from the buyers and Sellers table. saved the value as context[0].ID
+		app.locals.id = context;
+		complete();
 	});
 }
 
 app.post('/create_order',function(req,res){
-	var context = {}
-	var Type = ""
+	var context = {};
+	var Type = "";
+	var callCount = 0;
 	if(req.body.OrderType == "Buyer"){
-		sql = "INSERT INTO Orders (Product_ID, OrderType,Amount,Price,Buyer_ID) VALUES (?,?,?,?,?)";
-		con = getID(res,"Buyer",req.body.UserName,context);
+		f_sql = "INSERT INTO Orders (Product_ID, OrderType,Amount,Price,Buyer_ID) VALUES (?,?,?,?,?)";
+		getID(res,"Buyer",req.body.UserName,context,complete);
 		Type = "Buy";
 	}	
 	else{
-		sql = "INSERT INTO Orders (Product_ID, OrderType,Amount,Price,Seller_ID) VALUES (?,?,?,?,?)";
-		con = getID(res,"Seller",req.body.UserName);
-		Type = "Sell"
+		f_sql = "INSERT INTO Orders (Product_ID, OrderType,Amount,Price,Seller_ID) VALUES (?,?,?,?,?)";
+		getID(res,"Seller",req.body.UserName,context,complete);
+		Type = "Sell";
 	}
-	getDetails(res,req.body.agriculturalProduct);	
-	mysql.pool.query(sql,[("Adding the variable of ID we get back"), Type, req.body.OrderAmount,("Adding the variable of Price we get backA"),("Adding the Seller/Buyer-ID got back")],function(error,results,fields){
+	getDetails(res,req.body.agriculturalProduct,context,complete);
+	
+	function complete(){
+		callCount++;
+		if(callCount >= 2){
+			if(app.locals.ag_s[0].Wholesale_Price == null){
+				app.locals.ag_s[0].Wholesale.Price = 0;
+			}
+			mysql.pool.query(f_sql,[app.locals.ag_s[0].Product_ID,Type,req.body.OrderAmount,app.locals.ag_s[0].Wholesale_Price,app.locals.id[0].ID],function(error,results,fields){
+				if(error){
+					res.write(JSON.stringify(error));
+					res.end();
+				}
+				else{
+					res.redirect('/create');
+				}
+			});
+		}
+	}	
+	
+});
+
+app.post('/add_product',function(req,res){
+	sql = "INSERT INTO Agricultural_Products (Name,Tons_Produced,World_Ranking,Wholesale_Price) VALUES (?,?,?,?)";
+	mysql.pool.query(sql,[req.body.ProductName,req.body.TonsProduce,req.body.WorldsRanking,req.body.Amount],function(error,results,fields){
 		if(error){
 			res.write(JSON.stringify(error));
-			res.end();
+			res.end()
 		}
 		else{
-			res.redirect('/create');
+			res.redirect('/admin');
 		}
 	
 	});
+
 });
 
 app.use(function(req,res){

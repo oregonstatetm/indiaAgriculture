@@ -61,11 +61,26 @@
      </table>
 <hr>
 <div class="container">
-<form>
+<form action= '/add_product' method = 'post'>
   <div class="form-group">
     <label for="addProduct">Add Agricultural Product</label>
-    <input type="text" class="form-control" id="addProduct" placeholder="">
   </div>
+  <div class = "form-group">
+	  <label for = "ProductName"> Name of the Product: </label>
+	  <input type = "text" class = "form-control" name = "ProductName" placeholder = "Enter the Name">
+  </div>
+  <div class = "form-group">
+	  <label for = "TonsProduce"> Tones Produced: </label>
+	  <input type = "number" class = "form-control" name = "TonsProduce" id="TonsProduce" placeholder = "Enter the amount of Tons Produce">
+  </div>
+  <div>
+	  <label for = "WorldsRanking"> Worlds Ranking: </label>
+	  <input type = "number" class = "form-control" name = "WorldsRanking" id = "WorldsRanking" placeholder = "Enter the ranking of the product in the world">
+  </div>
+  <div class = "form-group">
+	<label for= "Amount"> Price: </label>
+	<input type = "number" class = "form-control" name = "Amount" id ="Amount" placeholder = "Enter the amount of the product in Rs">
+  </div>	  
 <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 
