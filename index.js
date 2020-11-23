@@ -221,7 +221,6 @@ function getID(res,table,Name,context,complete){
 			res.write(JSON.stringify(error));
 			res.end();
 		}
-		console.log("getting ID");
 		context = JSON.parse(JSON.stringify(results));
 		app.locals.id = context;
 		complete();
@@ -233,12 +232,12 @@ app.post('/create_order',function(req,res){
 	var Type = "";
 	var callCount = 0;
 	if(req.body.OrderType == "Buyer"){
-		f_sql = "INSERT INTO Orders (Product_ID, OrderType,Amount,Price,Buyer_ID) VALUES (?,?,?,?,?)";
+		f_sql = "INSERT INTO Orders (Product_ID, OrderType,Amount,Price,OrderDate,Buyer_ID) VALUES (?,?,?,?,?,?)";
 		getID(res,"Buyer",req.body.UserName,context,complete);
 		Type = "Buy";
 	}	
 	else{
-		f_sql = "INSERT INTO Orders (Product_ID, OrderType,Amount,Price,Seller_ID) VALUES (?,?,?,?,?)";
+		f_sql = "INSERT INTO Orders (Product_ID, OrderType,Amount,Price,OrderDate,Seller_ID) VALUES (?,?,?,?,?,?)";
 		getID(res,"Seller",req.body.UserName,context,complete);
 		Type = "Sell";
 	}
@@ -250,7 +249,7 @@ app.post('/create_order',function(req,res){
 			if(app.locals.ag_s[0].Wholesale_Price == null){
 				app.locals.ag_s[0].Wholesale.Price = 0;
 			}
-			mysql.pool.query(f_sql,[app.locals.ag_s[0].Product_ID,Type,req.body.OrderAmount,app.locals.ag_s[0].Wholesale_Price,app.locals.id[0].ID],function(error,results,fields){
+			mysql.pool.query(f_sql,[app.locals.ag_s[0].Product_ID,Type,req.body.OrderAmount,app.locals.ag_s[0].Wholesale_Price,req.body.date,app.locals.id[0].ID],function(error,results,fields){
 				if(error){
 					res.write(JSON.stringify(error));
 					res.end();
