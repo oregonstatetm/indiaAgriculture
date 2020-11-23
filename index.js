@@ -13,7 +13,7 @@ app.set('view engine', 'ejs');
 app.set('mysql',mysql);
 
 // Local Variables Passed to All Routes and used in SELECT queries
-app.locals.agTable=[];
+app.locals.agTable= [] ;
 app.locals.openOrders = [];
 app.locals.closedOrders = [];
 app.locals.allOrders = [];

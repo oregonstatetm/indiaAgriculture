@@ -19,8 +19,8 @@
     <div class="container" style="margin: auto;">
         <a href="/" type="button" class="btn btn-outline-dark">Home</a>
         <a href="/create" type="button" class="btn btn-outline-dark">Create Order</a>
-        <a href="/open" type="button" class="btn btn-outline-dark">Open Orders</a>
-        <a href="/closed" type="button" class="btn btn-outline-dark">Closed Orders</a>
+        <a href="/open" type="button" class="btn btn-outline-dark">Buy Orders</a>
+        <a href="/closed" type="button" class="btn btn-outline-dark">Sell Orders</a>
         <a href="/register" type="button" class="btn btn-outline-dark">Register</a>
         <a href="/about" type="button" class="btn btn-outline-dark">About</a>
         <a href="/admin" type="button" class="btn btn-outline-dark">Admin</a>
@@ -93,7 +93,6 @@
          <th scope="row">BuyerID</th>
          <th scope="row">Buyer Name</th>
          <th scope="row">Email</th>
-         <th scope="row">Update</th>
          <th scope="row">Delete</th>
       </tr>
       </thead>
@@ -102,7 +101,6 @@
          <th scope="row"><%= buyers[i].ID %></td>
          <td><%= buyers[i].Name %></td>
          <td><%= buyers[i].Email %></td>
-         <td><button type="submit" class="btn btn-primary">Update</button></td>
          <td><button type="submit" class="btn btn-primary">Delete</button></td>
        </tr>    
       <% } %>
@@ -116,7 +114,6 @@
          <th scope="row">SellerID</th>
          <th scope="row">Seller Name</th>
          <th scope="row">Email</th>
-         <th scope="row">Update</th>
          <th scope="row">Delete</th>
       </tr>
       </thead>
@@ -125,7 +122,6 @@
          <th scope="row"><%= sellers[i].ID %></td>
          <td><%= sellers[i].Name %></td>
          <td><%= sellers[i].Email %></td>
-         <td><button type="submit" class="btn btn-primary">Update</button></td>
          <td><button type="submit" class="btn btn-primary">Delete</button></td>
        </tr>    
       <% } %>
