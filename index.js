@@ -21,6 +21,7 @@ app.locals.buyers = [];
 app.locals.sellers = [];
 app.locals.ag_s = [];
 app.locals.id = [];
+app.locals.singleOrder = [];
 
 app.get('/', (req,res) => {
     var callbackCount = 0;
@@ -75,6 +76,22 @@ app.get('/index', (req, res) => {
     res.render('index.ejs')
 })
 
+app.get('/update/:id', (req, res) => {
+    orderID = req.params.id;
+    var callbackCount = 0;
+
+    getSingleOrder(res,orderID,complete);
+    getAgriculturalProducts(res, complete);
+
+    function complete(){
+        callbackCount++;
+        if(callbackCount >=2){
+            res.render('update.ejs');
+        }
+    }
+})
+
+
 app.get('/admin', (req, res) => {
     var callbackCount = 0;
 
@@ -92,6 +109,23 @@ app.get('/admin', (req, res) => {
 
 app.get('/about', (req, res) => {
     res.render('about.ejs')
+});
+sql="SELECT Order_ID, Product_ID, OrderType, Amount, Price, Status, OrderDate, Seller_ID, Buyer_ID FROM Orders";
+
+app.post('/update/:id', function (req,res){
+    orderID = req.params.id;
+    var sql = "UPDATE Orders SET Product_ID = ?, OrderType = ?, Amount = ?, Price = ?, Status = 0, OrderDate = ?, Seller_ID = ?, Buyer_ID = ? WHERE Order_ID = ?";
+    var inserts = [req.body.updateAgriculturalProduct_ID, req.body.updateOrderType, req.body.updateAmount, req.body.updatePrice, req.body.updateDate, req.body.updateSeller_ID, req.body.updateBuyer_ID,orderID];
+    sql = mysql.pool.query(sql,inserts,function(error, results, fields){
+        if(error){
+            res.write(JSON.stringify(error));
+            res.end();
+        }else{
+            res.status(200);
+            res.end();
+        }
+        res.render('admin');
+    });
 });
 
 app.post('/',function(req,res){
@@ -166,6 +200,24 @@ function getOrders(res, complete){
         complete();
 
     });
+}
+
+function getSingleOrder(res,id,complete){
+    sql="SELECT Order_ID, Product_ID, OrderType, Amount, Price, Status, OrderDate, Seller_ID, Buyer_ID FROM Orders WHERE Order_ID = ?"
+    var inserts = [id];
+    console.log("Order ID: ");
+    console.log(id);
+
+    mysql.pool.query(sql,inserts,function(error, results, fields){
+        if(error){
+            res.write(JSON.stringify(error));
+            res.end();
+        }
+        console.log(results);
+        app.locals.singleOrder = results;
+        complete();
+    })
+
 }
 
 //Get Open Orders to populate the table on /OpenOrders

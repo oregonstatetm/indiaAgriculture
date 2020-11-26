@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="/public/css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" >
+    <title>Admin</title>
+</head>
+
+
+<body>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+          <h1 class="display-4">Update Order_ID: <%= orderID %></h1>
+        </div>
+      </div>
+    <br>
+    <div class="container" style="margin: auto;">
+        <a href="/" type="button" class="btn btn-outline-dark">Home</a>
+        <a href="/create" type="button" class="btn btn-outline-dark">Create Order</a>
+        <a href="/open" type="button" class="btn btn-outline-dark">Buy Orders</a>
+        <a href="/closed" type="button" class="btn btn-outline-dark">Sell Orders</a>
+        <a href="/register" type="button" class="btn btn-outline-dark">Register</a>
+        <a href="/about" type="button" class="btn btn-outline-dark">About</a>
+        <a href="/admin" type="button" class="btn btn-outline-dark">Admin</a>
+    </div>
+    <hr>
+        <div class="container" style="margin: auto;">
+            <i>Look up Agricultural Product, Buyer, Seller IDs in tables below update form. Submit the ID Number</i><br>
+            <hr>
+            <form action="<%= '/update/' + orderID %>" method="post">
+                <div class="form-group">
+                    <label for="orderType">Agricultural Product ID</label>
+                    <input type="text" class="form-control" name="updateAgriculturalProduct_ID" value="<%= singleOrder[0].Product_ID %>" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="updateOrderType">Order Type</label> 
+                    <select class="form-control" name ="updateOrderType" id="orderType" style="width: 25%" required>
+                        <label for="orderType">Order Type</label>
+                        <option>Buy</option>
+                        <option>Sell</option>
+                    </select>
+                    <small id="typehelp" class="form-text text-muted">Original: <%= singleOrder[0].OrderType %></small>
+                  </div>
+                  <div class="form-group">
+                    <label for="sellerID">Buyer ID</label>
+                    <input type="text" class="form-control" name="updateBuyer_ID" value="<%= singleOrder[0].Buyer_ID %>" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="buyerID">Seller ID</label>
+                    <input type="text" class="form-control" name="updateSeller_ID" value="<%= singleOrder[0].Seller_ID %>" required>
+                  </div>
+                <div class="form-group">
+                    <label for="orderAmount">Amount</label>
+                    <input type="text" class="form-control" name="updateAmount" value="<%= singleOrder[0].Amount %>" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="price">Price</label>
+                    <input type="text" class="form-control" name="updatePrice" value="<%= singleOrder[0].Price %>" required>
+                  </div>
+              <div class = "form-group">
+                  <label for = "date"> Date: </label>
+                  <input type ="date" class = "form-control" name="updateDate" required>
+                  <small id="datehelp" class="form-text text-muted">Original Order Date: <%= singleOrder[0].OrderDate %></small>
+              </div>
+        <button  type="submit" class="btn btn-outline-dark">Update</button>
+    <hr></hr>
+    <div class="container">
+        <div class="row">
+        <div class="col-4">
+            <table class="table" style="width:80%; margin-left: auto; margin-right: auto;">
+                <thead class="thead-dark">
+                <tr>
+                <th scope="row">#</th>
+                <th scope="row">Product</th>
+                </tr>
+                </thead>
+                <% for (var i = 0; i < agTable.length;  i++) { %>
+                <tr>
+                <th scope="row"><%= i+1 %></td>
+                    <td><%= agTable[i].Name %></td>
+                    </tr>    
+                    <% } %>
+            </table>
+        </div>
+        <div class="col-4">
+            <table class="table" style="width:80%; margin-left: auto; margin-right: auto;">
+                <thead class="thead-dark">
+                <tr>
+                   <th scope="row">BuyerID</th>
+                   <th scope="row">Buyer Name</th>
+                </tr>
+                </thead>
+                <% for (var i = 0; i < buyers.length;  i++) { %>
+                 <tr>
+                   <th scope="row"><%= buyers[i].ID %></td>
+                   <td><%= buyers[i].Name %></td>
+                 </tr>    
+                <% } %>
+             </table>
+        </div>
+        <div class="col-4">
+            <table class="table" style="width:80%; margin-left: auto; margin-right: auto;">
+                <thead class="thead-dark">
+                <tr>
+                   <th scope="row">SellerID</th>
+                   <th scope="row">Seller Name</th>
+                </tr>
+                </thead>
+                <% for (var i = 0; i < sellers.length;  i++) { %>
+                 <tr>
+                   <th scope="row"><%= sellers[i].ID %></td>
+                   <td><%= sellers[i].Name %></td>
+                 </tr>    
+                <% } %>
+             </table>
+        </div>
+        </div>
+     </div>
+    </div>
+    </body>

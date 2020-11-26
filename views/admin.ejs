@@ -54,8 +54,8 @@
            <td><%= allOrders[i].OrderDate %></td>
            <td><%= allOrders[i].Seller_ID %></td>
            <td><%= allOrders[i].Buyer_ID %></td>
-           <td><button type="submit" class="btn btn-primary">Update</button></td>
-           <td><button type="submit" class="btn btn-primary">Delete</button></td>
+           <td><a href="<%= /update/ + allOrders[i].Order_ID %>" type="button" class="btn btn-primary">Update</a></td>
+           <td><a type="button" class="btn btn-primary">Delete</a></td>
          </tr>    
         <% } %>
      </table>
