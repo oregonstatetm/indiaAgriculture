@@ -27,11 +27,10 @@ app.get('/', (req,res) => {
     var callbackCount = 0;
 
     getAgriculturalProducts(res, complete);
-
     function complete(){
         callbackCount++;
         if(callbackCount >=1){
-            res.render('home.ejs');
+		res.render('home');
         }
 
     }
@@ -110,6 +109,7 @@ app.get('/admin', (req, res) => {
 app.get('/about', (req, res) => {
     res.render('about.ejs')
 });
+
 sql="SELECT Order_ID, Product_ID, OrderType, Amount, Price, Status, OrderDate, Seller_ID, Buyer_ID FROM Orders";
 
 app.post('/update/:id', function (req,res){
@@ -118,7 +118,6 @@ app.post('/update/:id', function (req,res){
     if(req.body.updateBuyer_ID == ''){req.body.updateBuyer_ID=null};
     var sql = "UPDATE Orders SET Product_ID = ?, OrderType = ?, Amount = ?, Price = ?, Status = 0, OrderDate = ?, Seller_ID = ?, Buyer_ID = ? WHERE Order_ID = ?";
     var inserts = [req.body.updateAgriculturalProduct_ID, req.body.updateOrderType, req.body.updateAmount, req.body.updatePrice, req.body.updateDate, req.body.updateSeller_ID, req.body.updateBuyer_ID,orderID];
-    console.log(inserts);
     sql = mysql.pool.query(sql,inserts,function(error, results, fields){
         if(error){
             res.write(JSON.stringify(error));
@@ -130,6 +129,26 @@ app.post('/update/:id', function (req,res){
     });
 });
 
+app.get('/delete/:id',function(req,res){
+	var orderID = req.params.id;
+	var callBack = 0;
+	console.log(req.params.id);
+	getSingleOrder(res,orderID,complete);
+	console.log("entered");
+	function complete(){
+		callBack ++;
+		if (callBack >= 1){
+			res.render('delete');
+		}
+	}
+
+});
+
+app.post('/delete/:id',function(req,res){
+	console.log("entered");
+
+
+});
 app.post('/',function(req,res){
 	if(req.body.registerType == "Buyer"){
 		sql = "INSERT INTO Buyers (Name,Email) VALUES (?,?)";
@@ -207,15 +226,12 @@ function getOrders(res, complete){
 function getSingleOrder(res,id,complete){
     sql="SELECT Order_ID, Product_ID, OrderType, Amount, Price, Status, OrderDate, Seller_ID, Buyer_ID FROM Orders WHERE Order_ID = ?"
     var inserts = [id];
-    console.log("Order ID: ");
-    console.log(id);
 
     mysql.pool.query(sql,inserts,function(error, results, fields){
         if(error){
             res.write(JSON.stringify(error));
             res.end();
         }
-        console.log(results);
         app.locals.singleOrder = results;
         complete();
     })

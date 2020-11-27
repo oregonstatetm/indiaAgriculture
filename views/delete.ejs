@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang ="en">
+<link rel="stylesheet" href="/public/css">
+<link rel="stylesheet" href="https://maxcdn.bootstraocdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPg6fy4IWvTNh0E263mFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymus">
+<head>
+	<meta charset = "utf-8">
+	<meta name="viewport">
+	<title> Admin </title>
+</head>
+
+<body>
+	<div class="jumbotron jumbroton-fluild">
+		<div class="container">
+			<h1 class="display-4"> Deleting the Order</h1>
+		</div>
+	</div>
+	<br>
+	<div class="container" style="margin:auto;">
+		<a href="/" type="button" class="btn btn-outline-dark"> Home </a>
+		<a href="/create" type="button" class="btn btn-outline-dark"> Create Order</a>
+		<a href="/open" type="button" class="btn btn-outline-dark"> Buy Orders </a>
+		<a href="/closed" type="button" class="btn btn-outline-dark"> Sell Orders</a>
+		<a href="/register" type="button" class="btn btn-outline-dark"> Register </a>
+		<a href="/about" type="button" class="btn btn-outline-dark"> About</a>
+		<a href="/admin" type= "button" class="btn btn-outline-dark"> Admin </a>
+	</div>
+	<hr>
+	<table class="table" style ="width:80%; margin-left: auto; margin-right:auto;">
+		<thead class="thrad-dark">
+		<tr>
+			<th scope="row"> OrderID</th>
+			<th scope="row"> Agricultural ProductID </th>
+			<th scope="row"> Type</th>
+			<th scope="row"> Amount</th>
+			<th scope="row"> Price </th>
+			<th scope="row"> Date</th>
+			<th scope="row"> Seller-ID</th>
+			<th scope="row"> Buyer-ID</th>
+		</tr>
+		</thead>
+		<% for (var i = 0; i < singleOrder.length; i++) { %>
+		<tr> 
+			<td> <%= singleOrder[0].Order_ID %></td>
+			<td> <%= singleOrder[0].Product_ID %></td>
+			<td> <%= singleOrder[0].OrderType %> </td>
+			<td> <%= singleOrder[0].Amount %> </td>
+			<td> <%= singleOrder[0].Price %> </td>
+			<td> <%= singleOrder[0].OrderDate %> </td>
+			<td> <%= singleOrder[0].Seller_ID %> </td>
+			<td> <%= singleOrder[0].Buyer_ID %> <td>
+		</tr>
+		<% } %>
+	</table>
+	<form action="<%= '/delete/' + singleOrder[0].orderID %>" method="post">
+		<label for="Sure"> Are your sure you want to delete this Order: </label>
+		<button type="submit" class="btn btn-outline-dark"> Delete </button>
+		<button> <a href='/admin' type="button" class="btn btn-outline-dark"> No </a></button>
+	</form>
+</body>
+
+</html>
