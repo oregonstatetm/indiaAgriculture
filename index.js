@@ -22,6 +22,8 @@ app.locals.sellers = [];
 app.locals.ag_s = [];
 app.locals.id = [];
 app.locals.singleOrder = [];
+app.locals.singleSeller = [];
+app.locals.singleBuyer = [];
 
 app.get('/', (req,res) => {
     var callbackCount = 0;
@@ -124,7 +126,7 @@ app.post('/update/:id', function (req,res){
             res.end();
         }else{
             res.status(200);
-            res.render('home');
+            res.redirect('/admin');
         }
     });
 });
@@ -142,6 +144,57 @@ app.get('/delete/:id',function(req,res){
 
 });
 
+app.get('/deleteSeller/:id',function(req,res){
+	ID = req.params.id;
+	var callBack = 0;
+	getSingleSeller_Buyer(res,ID,0,complete);
+	function complete(){
+		callBack ++;
+		if(callBack >= 1){
+			res.render('deleteSeller.ejs')
+		}
+	}
+});
+
+app.post('/deleteSeller/:id',function(req,res){
+	ID = req.params.id;
+	console.log(ID);
+	sql = "DELETE FROM Sellers WHERE ID = ?";
+	inserts = [ID];
+	mysql.pool.query(sql,inserts,function(error,results,field){
+		if(error){
+			res.write(JSON.stringify(error));
+			res.end();
+		}
+		res.redirect('/admin');
+	});
+});
+
+app.get('/deleteBuyer/:id',function(req,res){
+	ID = req.params.id;
+	var callBack = 0;
+	getSingleSeller_Buyer(res,ID,1,complete);
+	function complete(){
+		callBack ++;
+		if(callBack >= 1){
+			res.render('deleteBuyer.ejs');
+		}
+	}
+});
+
+app.post('/deleteBuyer/:id',function(req,res){
+	ID = req.params.id;
+	sql = "DELETE FROM Buyers WHERE ID = ?";
+	inserts = [ID];
+	mysql.pool.query(sql,inserts,function(error,results,field){
+		if(error){
+			res.write(JSON.stringify(error));
+			res.end();
+		}
+		res.redirect('/admin');
+	
+	});
+});
 app.post('/delete/:id',function(req,res){
 	orderID = req.params.id;
 	sql = "DELETE FROM Orders WHERE Order_ID = ?";
@@ -157,6 +210,8 @@ app.post('/delete/:id',function(req,res){
 	
 	});
 });
+
+
 app.post('/',function(req,res){
 	if(req.body.registerType == "Buyer"){
 		sql = "INSERT INTO Buyers (Name,Email) VALUES (?,?)";
@@ -216,6 +271,25 @@ function getSellers(res, complete){
 
     });
 }
+
+function getSingleSeller_Buyer(res,ID,pass,complete){
+	if(pass == 0){
+		sql = "SELECT ID, Name, Email FROM Sellers WHERE ID = ?";
+	}
+	if(pass == 1){
+		sql = "SELECT ID, Name, Email FROM Buyers WHERE ID = ?";
+	}
+	inserts = [ID]
+	mysql.pool.query(sql,inserts,function(error,results,fields){
+		if(error){
+			res.write(JSON.stringify(error));
+			res.end();
+		}
+		app.locals.singleSeller = results;
+		complete();
+	});
+}
+
 
 //Get Orders to populate the table on /Admin
 function getOrders(res, complete){

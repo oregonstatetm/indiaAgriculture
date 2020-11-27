@@ -10,7 +10,7 @@
 <body>
 	<div class="jumbotron jumbroton-fluild">
 		<div class="container">
-			<h1 class="display-4"> Deleting the Order</h1>
+			<h1 class="display-4"> Deleting the Seller</h1>
 		</div>
 	</div>
 	<br>
@@ -27,31 +27,21 @@
 	<table class="table" style ="width:80%; margin-left: auto; margin-right:auto;">
 		<thead class="thrad-dark">
 		<tr>
-			<th scope="row"> OrderID</th>
-			<th scope="row"> Agricultural ProductID </th>
-			<th scope="row"> Type</th>
-			<th scope="row"> Amount</th>
-			<th scope="row"> Price </th>
-			<th scope="row"> Date</th>
-			<th scope="row"> Seller-ID</th>
-			<th scope="row"> Buyer-ID</th>
+			<th scope="row"> ID</th>
+			<th scope="row"> Name </th>
+			<th scope="row"> Email </th>
 		</tr>
 		</thead>
-		<% for (var i = 0; i < singleOrder.length; i++) { %>
+		<% for (var i = 0; i < singleSeller.length; i++) { %>
 		<tr> 
-			<td> <%= singleOrder[0].Order_ID %></td>
-			<td> <%= singleOrder[0].Product_ID %></td>
-			<td> <%= singleOrder[0].OrderType %> </td>
-			<td> <%= singleOrder[0].Amount %> </td>
-			<td> <%= singleOrder[0].Price %> </td>
-			<td> <%= singleOrder[0].OrderDate %> </td>
-			<td> <%= singleOrder[0].Seller_ID %> </td>
-			<td> <%= singleOrder[0].Buyer_ID %> <td>
+			<td> <%= singleSeller[0].ID %></td>
+			<td> <%= singleSeller[0].Name %></td>
+			<td> <%= singleSeller[0].Email %> <td>
 		</tr>
 		<% } %>
 	</table>
-	<form action="<%= '/delete/' + orderID %>" method="post">
-		<label for="Sure"> Are your sure you want to delete this Order: </label>
+	<form action="<%= '/deleteSeller/' + ID %>" method="post">
+		<label for="Sure"> Are your sure you want to delete this Seller: </label>
 		<button type="submit" class="btn btn-outline-dark"> Yes, Delete </button>
 		<a href='/admin' class="btn btn-outline-dark"> No </a>
 	</form>

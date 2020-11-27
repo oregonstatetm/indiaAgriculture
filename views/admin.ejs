@@ -101,8 +101,8 @@
          <th scope="row"><%= buyers[i].ID %></td>
          <td><%= buyers[i].Name %></td>
          <td><%= buyers[i].Email %></td>
-         <td><button type="submit" class="btn btn-primary">Delete</button></td>
-       </tr>    
+	 <td><a href="<%= /deleteBuyer/ + buyers[i].ID %>" type="button" class="btn btn-primary">Delete</a></td>
+       </tr>
       <% } %>
    </table>
 </div>
@@ -122,8 +122,8 @@
          <th scope="row"><%= sellers[i].ID %></td>
          <td><%= sellers[i].Name %></td>
          <td><%= sellers[i].Email %></td>
-         <td><button type="submit" class="btn btn-primary">Delete</button></td>
-       </tr>    
+	 <td><a href="<%= /deleteSeller/ + sellers[i].ID %>" type="button" class="btn btn-primary">Delete</a></td>
+       </tr>
       <% } %>
    </table>
 </div>
