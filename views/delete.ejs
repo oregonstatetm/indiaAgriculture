@@ -51,10 +51,10 @@
 		</tr>
 		<% } %>
 	</table>
-	<form action="<%= '/delete/' + singleOrder[0].orderID %>" method="post">
+	<form action="<%= '/delete/' + orderID %>" method="post">
 		<label for="Sure"> Are your sure you want to delete this Order: </label>
-		<button type="submit" class="btn btn-outline-dark"> Delete </button>
-		<button> <a href='/admin' type="button" class="btn btn-outline-dark"> No </a></button>
+		<button type="submit" class="btn btn-outline-dark"> Yes, Delete </button>
+		<a href='/admin' class="btn btn-outline-dark"> No </a>
 	</form>
 </body>
 

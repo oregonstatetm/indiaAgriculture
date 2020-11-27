@@ -130,24 +130,32 @@ app.post('/update/:id', function (req,res){
 });
 
 app.get('/delete/:id',function(req,res){
-	var orderID = req.params.id;
+	orderID = req.params.id;
 	var callBack = 0;
-	console.log(req.params.id);
 	getSingleOrder(res,orderID,complete);
-	console.log("entered");
 	function complete(){
 		callBack ++;
 		if (callBack >= 1){
-			res.render('delete');
+			res.render('delete.ejs');
 		}
 	}
 
 });
 
 app.post('/delete/:id',function(req,res){
-	console.log("entered");
-
-
+	orderID = req.params.id;
+	sql = "DELETE FROM Orders WHERE Order_ID = ?";
+	inserts = [orderID];
+	mysql.pool.query(sql,inserts,function(error,results,fields){
+		if(error){
+			res.write(JSON.stringify(error));
+			res.end();
+		}
+		else{
+			res.redirect('/admin');
+		}
+	
+	});
 });
 app.post('/',function(req,res){
 	if(req.body.registerType == "Buyer"){
