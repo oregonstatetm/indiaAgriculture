@@ -114,17 +114,19 @@ sql="SELECT Order_ID, Product_ID, OrderType, Amount, Price, Status, OrderDate, S
 
 app.post('/update/:id', function (req,res){
     orderID = req.params.id;
+    if(req.body.updateSeller_ID == ''){req.body.updateSeller_ID=null};
+    if(req.body.updateBuyer_ID == ''){req.body.updateBuyer_ID=null};
     var sql = "UPDATE Orders SET Product_ID = ?, OrderType = ?, Amount = ?, Price = ?, Status = 0, OrderDate = ?, Seller_ID = ?, Buyer_ID = ? WHERE Order_ID = ?";
     var inserts = [req.body.updateAgriculturalProduct_ID, req.body.updateOrderType, req.body.updateAmount, req.body.updatePrice, req.body.updateDate, req.body.updateSeller_ID, req.body.updateBuyer_ID,orderID];
+    console.log(inserts);
     sql = mysql.pool.query(sql,inserts,function(error, results, fields){
         if(error){
             res.write(JSON.stringify(error));
             res.end();
         }else{
             res.status(200);
-            res.end();
+            res.render('home');
         }
-        res.render('admin');
     });
 });
 
