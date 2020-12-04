@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="/public/css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" >
+    <title>Admin</title>
+</head>
+
+
+<body>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+          <h1 class="display-4">Admin Page</h1>
+        </div>
+      </div>
+    <br>
+    <div class="container" style="margin: auto;">
+        <a href="/" type="button" class="btn btn-outline-dark">Home</a>
+        <a href="/create" type="button" class="btn btn-outline-dark">Create Order</a>
+        <a href="/open" type="button" class="btn btn-outline-dark">Buy Orders</a>
+        <a href="/closed" type="button" class="btn btn-outline-dark">Sell Orders</a>
+        <a href="/register" type="button" class="btn btn-outline-dark">Register</a>
+        <a href="/about" type="button" class="btn btn-outline-dark">About</a>
+        <a href="/admin" type="button" class="btn btn-outline-dark">Admin</a>
+    </div>
+    <hr>
+
+</body>
+
+
+</html>

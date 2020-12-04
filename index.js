@@ -167,7 +167,7 @@ app.post('/deleteSeller/:id',function(req,res){
 		}
 		for ( i = 0; i < results.length ; i ++){
 			if (ID == results[i].Seller_ID){
-				res.redirect('NoDelete.ejs');
+				res.render('NoDelete.ejs');
 				return
 			}
 		}
@@ -206,7 +206,7 @@ app.post('/deleteBuyer/:id',function(req,res){
 		}
 		for (i =0; i < results.length  ; i ++){	
 			if(ID == results[i].Buyer_ID){
-				res.redirect('NoDelete.ejs');
+				res.render('NoDelete.ejs');
 				return;
 			}
 		}
