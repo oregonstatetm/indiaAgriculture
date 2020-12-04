@@ -158,17 +158,30 @@ app.get('/deleteSeller/:id',function(req,res){
 
 app.post('/deleteSeller/:id',function(req,res){
 	ID = req.params.id;
-	console.log(ID);
-	sql = "DELETE FROM Sellers WHERE ID = ?";
 	inserts = [ID];
-	mysql.pool.query(sql,inserts,function(error,results,field){
-		if(error){
+	sql = "SELECT Seller_ID FROM Orders"
+	mysql.pool.query(sql, function (error,results,fields){
+		if (error){
 			res.write(JSON.stringify(error));
 			res.end();
 		}
-		res.redirect('/admin');
+		for ( i = 0; i < results.length ; i ++){
+			if (ID == results[i].Seller_ID){
+				res.redirect('NoDelete.ejs');
+				return
+			}
+		}
+		sql = "DELETE FROM Sellers WHERE ID = ?";
+		mysql.pool.query(sql,inserts,function(error,results,field){
+			if(error){
+				res.write(JSON.stringify(error));
+				res.end();
+			}
+			res.redirect('/admin');
+		});
 	});
 });
+
 
 app.get('/deleteBuyer/:id',function(req,res){
 	ID = req.params.id;
@@ -184,17 +197,32 @@ app.get('/deleteBuyer/:id',function(req,res){
 
 app.post('/deleteBuyer/:id',function(req,res){
 	ID = req.params.id;
-	sql = "DELETE FROM Buyers WHERE ID = ?";
-	inserts = [ID];
-	mysql.pool.query(sql,inserts,function(error,results,field){
+	inserts = ID;
+	sql = "SELECT Buyer_ID FROM Orders";
+	mysql.pool.query(sql,function(error,results,field){
 		if(error){
 			res.write(JSON.stringify(error));
 			res.end();
 		}
-		res.redirect('/admin');
+		for (i =0; i < results.length  ; i ++){	
+			if(ID == results[i].Buyer_ID){
+				res.redirect('NoDelete.ejs');
+				return;
+			}
+		}
+		sql = "DELETE FROM Buyers WHERE ID = ?";
+		mysql.pool.query(sql,inserts,function(error,results,field){
+			if(error){
+				res.write(JSON.stringify(error));
+				res.end();
+			}
+			res.redirect('/admin');
 	
+		});
+		
 	});
 });
+
 app.post('/delete/:id',function(req,res){
 	orderID = req.params.id;
 	sql = "DELETE FROM Orders WHERE Order_ID = ?";
