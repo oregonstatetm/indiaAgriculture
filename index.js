@@ -21,9 +21,12 @@ app.locals.buyers = [];
 app.locals.sellers = [];
 app.locals.ag_s = [];
 app.locals.id = [];
+app.locals.updateSellerId = [];
+app.locals.updateBuyerId = [];
 app.locals.singleOrder = [];
 app.locals.singleSeller = [];
 app.locals.singleBuyer = [];
+app.locals.buyerList = [];
 
 app.get('/', (req,res) => {
     var callbackCount = 0;
@@ -70,7 +73,18 @@ app.get('/closed', (req, res) => {
 })
 
 app.get('/create', (req, res) => {
-    res.render('create.ejs')
+    var callbackCount = 0;
+
+	getBuyers(res, complete);
+	getSellers(res,complete);
+
+    function complete(){
+        callbackCount++;
+        if(callbackCount >=2){
+            res.render('create.ejs')
+        }
+    }
+    
 })
 
 app.get('/index', (req, res) => {
@@ -81,12 +95,14 @@ app.get('/update/:id', (req, res) => {
     orderID = req.params.id;
     var callbackCount = 0;
 
+	getBuyers(res,complete);
+	getSellers(res,complete);
     getSingleOrder(res,orderID,complete);
     getAgriculturalProducts(res, complete);
 
     function complete(){
         callbackCount++;
-        if(callbackCount >=2){
+        if(callbackCount >=4){
             res.render('update.ejs');
         }
     }
@@ -115,20 +131,22 @@ app.get('/about', (req, res) => {
 sql="SELECT Order_ID, Product_ID, OrderType, Amount, Price, Status, OrderDate, Seller_ID, Buyer_ID FROM Orders";
 
 app.post('/update/:id', function (req,res){
-    orderID = req.params.id;
-    if(req.body.updateSeller_ID == ''){req.body.updateSeller_ID=null};
-    if(req.body.updateBuyer_ID == ''){req.body.updateBuyer_ID=null};
-    var sql = "UPDATE Orders SET Product_ID = ?, OrderType = ?, Amount = ?, Price = ?, Status = 0, OrderDate = ?, Seller_ID = ?, Buyer_ID = ? WHERE Order_ID = ?";
-    var inserts = [req.body.updateAgriculturalProduct_ID, req.body.updateOrderType, req.body.updateAmount, req.body.updatePrice, req.body.updateDate, req.body.updateSeller_ID, req.body.updateBuyer_ID,orderID];
-    sql = mysql.pool.query(sql,inserts,function(error, results, fields){
-        if(error){
-            res.write(JSON.stringify(error));
-            res.end();
-        }else{
-            res.status(200);
-            res.redirect('/admin');
-        }
-    });
+	orderID = req.params.id;
+	if(req.body.sellerName=='none'){req.body.sellerName=null;}
+	if(req.body.buyerName=='none'){req.body.buyerName=null;}
+	if(req.body.sellerName==null && req.body.buyerName==null){res.redirect('/delete/'+orderID); return;}
+    		var sql = "UPDATE Orders SET Product_ID = ?, OrderType = ?, Amount = ?, Price = ?, Status = 0, OrderDate = ?, Seller_ID = ?, Buyer_ID = ? WHERE Order_ID = ?";
+    		var inserts = [req.body.updateAgriculturalProduct_ID, req.body.updateOrderType, req.body.updateAmount, req.body.updatePrice, req.body.updateDate, req.body.sellerName, req.body.buyerName, orderID];
+    		sql = mysql.pool.query(sql,inserts,function(error, results, fields){
+				if(error){
+            		res.write(JSON.stringify(error));
+            		res.end();
+        		}else{
+            	res.status(200);
+            	res.redirect('/admin');
+        	}
+		});
+	//}}
 });
 
 app.get('/delete/:id',function(req,res){
@@ -319,6 +337,19 @@ function getSingleSeller_Buyer(res,ID,pass,complete){
 }
 
 
+function getBuyerList(res, complete){
+	sql="SELECT ID, Name FROM Buyers";
+	mysql.pool.query(sql,"",function(error,results,fields){
+		if(error){
+			res.write(JSON.stringify(error));
+			res.end();
+		}
+		app.locals.buyerList = results;
+		complete();
+	})
+}
+
+
 //Get Orders to populate the table on /Admin
 function getOrders(res, complete){
     sql="SELECT Order_ID, Product_ID, OrderType, Amount, Price, Status, OrderDate, Seller_ID, Buyer_ID FROM Orders";
@@ -390,7 +421,7 @@ function getDetails(res,Name,context,complete){
 }
 function getID(res,table,Name,context,complete){
 	var ID_N = 0
-	if (table == "Seller"){
+	if (table == "Seller" || table == "updateSeller"){
 		sql = "SELECT ID FROM Sellers WHERE Name = ?";
 	}
 	else{
@@ -402,7 +433,9 @@ function getID(res,table,Name,context,complete){
 			res.end();
 		}
 		context = JSON.parse(JSON.stringify(results));
-		app.locals.id = context;
+		if(table == "updateBuyer"){app.locals.updateBuyerId=context;}
+		else if(table == "updateSeller"){app.locals.updateSellerId=context;}
+		else{app.locals.id = context;}
 		complete();
 	});
 }
@@ -413,12 +446,14 @@ app.post('/create_order',function(req,res){
 	var callCount = 0;
 	if(req.body.OrderType == "Buyer"){
 		f_sql = "INSERT INTO Orders (Product_ID, OrderType,Amount,Price,OrderDate,Buyer_ID) VALUES (?,?,?,?,?,?)";
-		getID(res,"Buyer",req.body.UserName,context,complete);
+		if(req.body.buyerName=="None"){res.redirect('/'); return;}
+		getID(res,"Buyer",req.body.buyerName,context,complete);
 		Type = "Buy";
 	}	
 	else{
 		f_sql = "INSERT INTO Orders (Product_ID, OrderType,Amount,Price,OrderDate,Seller_ID) VALUES (?,?,?,?,?,?)";
-		getID(res,"Seller",req.body.UserName,context,complete);
+		if(req.body.buyerName=="None"){res.redirect('/'); return;}
+		getID(res,"Seller",req.body.sellerName,context,complete);
 		Type = "Sell";
 	}
 	getDetails(res,req.body.agriculturalProduct,context,complete);

@@ -31,8 +31,15 @@
             <hr>
             <form action="<%= '/update/' + orderID %>" method="post">
                 <div class="form-group">
-                    <label for="orderType">Agricultural Product ID</label>
-                    <input type="text" class="form-control" name="updateAgriculturalProduct_ID" value="<%= singleOrder[0].Product_ID %>" required>
+                  <label for="orderType">Agricultural Product</label>
+                  <select class="form-control" name="updateAgriculturalProduct_ID" id="updateAgriculturalProduct_ID">
+                    <% 
+                    for (var z = 0; z < agTable.length; z++) { %>
+                        <option value=<%= z+1 %>> 
+                           <%= agTable[z].Name %>
+                        </option>
+                        <% } %>
+                    </select>
                   </div>
                   <div class="form-group">
                     <label for="updateOrderType">Order Type</label> 
@@ -44,12 +51,28 @@
                     <small id="typehelp" class="form-text text-muted">Original: <%= singleOrder[0].OrderType %></small>
                   </div>
                   <div class="form-group">
-                    <label for="sellerID">Buyer ID</label>
-                    <input type="text" class="form-control" name="updateBuyer_ID" value="<%= singleOrder[0].Buyer_ID %>">
+                    <label for="buyer">Buyer Name</label>
+                    <select class="form-control" name="buyerName" id="buyerName">
+                      <option value='none'>None</option>
+                      <% 
+                      for (var i = 0; i < buyers.length; i++) { %>
+                          <option value=<%= buyers[i].ID %>>
+                             <%= buyers[i].Name %>
+                          </option>
+                          <% } %>
+                      </select>
                   </div>
                   <div class="form-group">
-                    <label for="buyerID">Seller ID</label>
-                    <input type="text" class="form-control" name="updateSeller_ID" value="<%= singleOrder[0].Seller_ID %>">
+                    <label for="seller">Seller Name</label>
+                    <select class="form-control" name="sellerName" id="sellerName">
+                      <option value='none'>None</option>
+                      <% 
+                      for (var j = 0; j < sellers.length; j++) { %>
+                        <option value=<%= sellers[j].ID %>>
+                             <%= sellers[j].Name %>
+                          </option>
+                          <% } %>
+                      </select>
                   </div>
                 <div class="form-group">
                     <label for="orderAmount">Amount</label>

@@ -67,8 +67,28 @@
                 </select>
               </div>
               <div class="form-group">
-                <label for="userName">Buyer / Seller Name</label>
-                <input type="text" class="form-control" name ="UserName" id="userName" placeholder="Enter Name">
+                <label for="buyer">Buyer Name</label>
+                <select class="form-control" name="buyerName" id="buyerName">
+                  <option>None</option>
+                  <% 
+                  for (var i = 0; i < buyers.length; i++) { %>
+                      <option>
+                         <%= buyers[i].Name %>
+                      </option>
+                      <% } %>
+                  </select>
+              </div>
+              <div class="form-group">
+                <label for="seller">Seller Name</label>
+                <select class="form-control" name="sellerName" id="sellerName">
+                  <option>None</option>
+                  <% 
+                  for (var j = 0; j < sellers.length; j++) { %>
+                    <option>
+                         <%= sellers[j].Name %>
+                      </option>
+                      <% } %>
+                  </select>
               </div>
             <div class="form-group">
                 <label for="orderAmount">Amount</label>
