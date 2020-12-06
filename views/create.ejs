@@ -30,35 +30,15 @@
         <form action='/create_order' method= 'post'>
             <div class="form-group">
                 <label for="agriculturalProduct">Agricultural Product</label>
-                <select class="form-control" name = "agriculturalProduct" id="agriculturalProduct">
-                  <option>Sugar Cane</option>
-                  <option>Rice, Paddy</option>
-                  <option>Rice, Milled</option>
-                  <option>Wheat</option>
-                  <option>Buffalo Milk</option>
-                  <option>Cow Milk</option>
-                  <option>Potatoes</option>
-                  <option>Fresh Vegetables</option>
-                  <option>Bananas</option>
-                  <option>Maize</option>
-                  <option>Dry Onions</option>
-                  <option>Mangoes/Guavas</option>
-                  <option>Tomatoes</option>
-                  <option>Seed Cotton</option>
-                  <option>Soybeans</option>
-                  <option>Eggplants</option>
-                  <option>Coconuts</option>
-                  <option>Millet</option>
-                  <option>Chick Peas</option>
-                  <option>Fresh Fruit</option>
-                  <option>Tropical Fruit</option>
-                  <option>Pumpkins, Squash and Gourds</option>
-                  <option>Green Peas</option>
-                  <option>Chillies & Peppers</option>
-                  <option>Lentils</option>
-                  <option>Tea</option>
-                </select>
-              </div>
+                <select class="form-control" name="agriculturalProduct" id="agriculturalProduct">
+                  <% 
+                  for (var z = 0; z < agTable.length; z++) { %>
+                      <option value=<%= agTable[z].Name %>> 
+                         <%= agTable[z].Name %>
+                      </option>
+                      <% } %>
+                  </select>
+                </div>
               <div class="form-group">
                 <label for="orderType">Type</label>
                 <select class="form-control" name ="OrderType" id="orderType">
@@ -77,6 +57,7 @@
                       </option>
                       <% } %>
                   </select>
+                <small id="datehelp" class="form-text text-muted">Buyer is required for 'Buyer' order. Buyer set to NULL for 'Sell' order.</small>
               </div>
               <div class="form-group">
                 <label for="seller">Seller Name</label>
@@ -89,14 +70,15 @@
                       </option>
                       <% } %>
                   </select>
+                  <small id="datehelp" class="form-text text-muted">Seller is required for 'Seller' order. Seller set to NULL for 'Buy' order.</small>
               </div>
             <div class="form-group">
                 <label for="orderAmount">Amount</label>
-                <input type="number" class="form-control" name = "OrderAmount" id="orderAmount" placeholder="0">
+                <input type="number" class="form-control" name = "OrderAmount" id="orderAmount" required>
               </div>
 	      <div class = "form-group">
 		      <label for = "date"> Date: </label>
-		      <input type ="date" class = "form-control" name="date" id="date" placeholder = "YYYY-MM-DD">
+		      <input type ="date" class = "form-control" name="date" id="date" placeholder = "YYYY-MM-DD" required>
 	      	
 	      </div>      
             <button type="submit" class="btn btn-primary">Submit</button>

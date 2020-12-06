@@ -27,6 +27,9 @@ app.locals.singleOrder = [];
 app.locals.singleSeller = [];
 app.locals.singleBuyer = [];
 app.locals.buyerList = [];
+app.locals.OriginalProduct = "";
+app.locals.OriginalBuyer = "";
+app.locals.OriginalSeller = "";
 
 app.get('/', (req,res) => {
     var callbackCount = 0;
@@ -77,10 +80,11 @@ app.get('/create', (req, res) => {
 
 	getBuyers(res, complete);
 	getSellers(res,complete);
+	getAgriculturalProducts(res,complete);
 
     function complete(){
         callbackCount++;
-        if(callbackCount >=2){
+        if(callbackCount >=3){
             res.render('create.ejs')
         }
     }
@@ -94,16 +98,41 @@ app.get('/index', (req, res) => {
 app.get('/update/:id', (req, res) => {
     orderID = req.params.id;
     var callbackCount = 0;
-
+	var x = 0; var y = 0; var z = 0;
 	getBuyers(res,complete);
 	getSellers(res,complete);
     getSingleOrder(res,orderID,complete);
-    getAgriculturalProducts(res, complete);
+	getAgriculturalProducts(res, complete);
+	app.locals.OriginalBuyer="None";
+	app.locals.OriginalSeller="None";
+	app.locals.OriginalProduct="";
+
 
     function complete(){
         callbackCount++;
         if(callbackCount >=4){
-            res.render('update.ejs');
+			for(x=0;x<app.locals.agTable.length;x++){
+				//console.log("NoMatch", app.locals.agTable[x].Product_ID, ", ", app.locals.singleOrder[0].Product_ID);
+				if(app.locals.agTable[x].Product_ID == app.locals.singleOrder[0].Product_ID){
+					//console.log("Match", app.locals.agTable[x].Product_ID);
+					app.locals.OriginalProduct=app.locals.agTable[x].Name;
+				}
+			}
+			for(y=0;y<app.locals.sellers.length;y++){
+				if(app.locals.sellers[y].ID == app.locals.singleOrder[0].Seller_ID){
+					//console.log("Match", app.locals.sellers[y].ID);
+					app.locals.OriginalSeller=app.locals.sellers[y].Name;
+				}
+			}
+			for(z=0;z<app.locals.buyers.length;z++){
+				if(app.locals.buyers[z].ID == app.locals.singleOrder[0].Buyer_ID){
+					//console.log("Match", app.locals.buyers[z].ID);
+					app.locals.OriginalBuyer=app.locals.buyers[z].Name;
+				}
+			}
+
+			res.render('update.ejs');
+			
         }
     }
 })
@@ -278,7 +307,7 @@ app.post('/',function(req,res){
 
 //Get Agricultural Products to populate the table on /home
 function getAgriculturalProducts(res, complete){
-    sql="SELECT Name, Tons_Produced, World_Ranking, Wholesale_Price FROM Agricultural_Products";
+    sql="SELECT Product_ID, Name, Tons_Produced, World_Ranking, Wholesale_Price FROM Agricultural_Products";
     mysql.pool.query(sql, function (error,results,fields){
         if(error){
             res.write(JSON.stringify(error));
@@ -358,11 +387,23 @@ function getOrders(res, complete){
             res.write(JSON.stringify(error));
             res.end();
         }
-        app.locals.allOrders=results;
+		app.locals.allOrders=results;
+		
+		for(let i=0;i<app.locals.allOrders.length;i++){
+			app.locals.allOrders[i].OrderDate=dateConvert(app.locals.allOrders[i].OrderDate)
+		}
         complete();
 
     });
 }
+
+//Convert Timestamp to Date
+function dateConvert(str) {
+	var date = new Date(str),
+	  mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+	  day = ("0" + date.getDate()).slice(-2);
+	return [date.getFullYear(), mnth, day].join("-");
+  }
 
 function getSingleOrder(res,id,complete){
     sql="SELECT Order_ID, Product_ID, OrderType, Amount, Price, Status, OrderDate, Seller_ID, Buyer_ID FROM Orders WHERE Order_ID = ?"
@@ -452,7 +493,7 @@ app.post('/create_order',function(req,res){
 	}	
 	else{
 		f_sql = "INSERT INTO Orders (Product_ID, OrderType,Amount,Price,OrderDate,Seller_ID) VALUES (?,?,?,?,?,?)";
-		if(req.body.buyerName=="None"){res.redirect('/'); return;}
+		if(req.body.sellerName=="None"){res.redirect('/'); return;}
 		getID(res,"Seller",req.body.sellerName,context,complete);
 		Type = "Sell";
 	}

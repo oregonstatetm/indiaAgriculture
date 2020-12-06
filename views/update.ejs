@@ -27,7 +27,7 @@
     </div>
     <hr>
         <div class="container" style="margin: auto;">
-            <i>Look up Agricultural Product, Buyer, Seller IDs in tables below update form. Submit the ID Number</i><br>
+            <i>If buyer and seller are both updated to 'None', order is redirected to delete option</i><br>
             <hr>
             <form action="<%= '/update/' + orderID %>" method="post">
                 <div class="form-group">
@@ -40,6 +40,7 @@
                         </option>
                         <% } %>
                     </select>
+                    <small id="typehelp" class="form-text text-muted">Original: <%= OriginalProduct %></small>
                   </div>
                   <div class="form-group">
                     <label for="updateOrderType">Order Type</label> 
@@ -61,6 +62,7 @@
                           </option>
                           <% } %>
                       </select>
+                      <small id="typehelp" class="form-text text-muted">Original: <%= OriginalBuyer %></small>
                   </div>
                   <div class="form-group">
                     <label for="seller">Seller Name</label>
@@ -73,6 +75,7 @@
                           </option>
                           <% } %>
                       </select>
+                      <small id="typehelp" class="form-text text-muted">Original: <%= OriginalSeller %></small>
                   </div>
                 <div class="form-group">
                     <label for="orderAmount">Amount</label>
@@ -89,57 +92,7 @@
               </div>
         <button  type="submit" class="btn btn-outline-dark">Update</button>
     <hr></hr>
-    <div class="container">
-        <div class="row">
-        <div class="col-4">
-            <table class="table" style="width:80%; margin-left: auto; margin-right: auto;">
-                <thead class="thead-dark">
-                <tr>
-                <th scope="row">#</th>
-                <th scope="row">Product</th>
-                </tr>
-                </thead>
-                <% for (var i = 0; i < agTable.length;  i++) { %>
-                <tr>
-                <th scope="row"><%= i+1 %></td>
-                    <td><%= agTable[i].Name %></td>
-                    </tr>    
-                    <% } %>
-            </table>
-        </div>
-        <div class="col-4">
-            <table class="table" style="width:80%; margin-left: auto; margin-right: auto;">
-                <thead class="thead-dark">
-                <tr>
-                   <th scope="row">BuyerID</th>
-                   <th scope="row">Buyer Name</th>
-                </tr>
-                </thead>
-                <% for (var i = 0; i < buyers.length;  i++) { %>
-                 <tr>
-                   <th scope="row"><%= buyers[i].ID %></td>
-                   <td><%= buyers[i].Name %></td>
-                 </tr>    
-                <% } %>
-             </table>
-        </div>
-        <div class="col-4">
-            <table class="table" style="width:80%; margin-left: auto; margin-right: auto;">
-                <thead class="thead-dark">
-                <tr>
-                   <th scope="row">SellerID</th>
-                   <th scope="row">Seller Name</th>
-                </tr>
-                </thead>
-                <% for (var i = 0; i < sellers.length;  i++) { %>
-                 <tr>
-                   <th scope="row"><%= sellers[i].ID %></td>
-                   <td><%= sellers[i].Name %></td>
-                 </tr>    
-                <% } %>
-             </table>
-        </div>
-        </div>
-     </div>
+   
     </div>
+    
     </body>
