@@ -157,14 +157,14 @@ app.get('/about', (req, res) => {
     res.render('about.ejs')
 });
 
-sql="SELECT Order_ID, Product_ID, OrderType, Amount, Price, Status, OrderDate, Seller_ID, Buyer_ID FROM Orders";
+sql="SELECT Order_ID, Product_ID, OrderType, Amount, Price, OrderDate, Seller_ID, Buyer_ID FROM Orders";
 
 app.post('/update/:id', function (req,res){
 	orderID = req.params.id;
 	if(req.body.sellerName=='none'){req.body.sellerName=null;}
 	if(req.body.buyerName=='none'){req.body.buyerName=null;}
 	if(req.body.sellerName==null && req.body.buyerName==null){res.redirect('/delete/'+orderID); return;}
-    		var sql = "UPDATE Orders SET Product_ID = ?, OrderType = ?, Amount = ?, Price = ?, Status = 0, OrderDate = ?, Seller_ID = ?, Buyer_ID = ? WHERE Order_ID = ?";
+    		var sql = "UPDATE Orders SET Product_ID = ?, OrderType = ?, Amount = ?, Price = ?, OrderDate = ?, Seller_ID = ?, Buyer_ID = ? WHERE Order_ID = ?";
     		var inserts = [req.body.updateAgriculturalProduct_ID, req.body.updateOrderType, req.body.updateAmount, req.body.updatePrice, req.body.updateDate, req.body.sellerName, req.body.buyerName, orderID];
     		sql = mysql.pool.query(sql,inserts,function(error, results, fields){
 				if(error){
@@ -381,7 +381,7 @@ function getBuyerList(res, complete){
 
 //Get Orders to populate the table on /Admin
 function getOrders(res, complete){
-    sql="SELECT Order_ID, Product_ID, OrderType, Amount, Price, Status, OrderDate, Seller_ID, Buyer_ID FROM Orders";
+    sql="SELECT Order_ID, Product_ID, OrderType, Amount, Price, OrderDate, Seller_ID, Buyer_ID FROM Orders";
     mysql.pool.query(sql, function (error,results,fields){
         if(error){
             res.write(JSON.stringify(error));
@@ -406,7 +406,7 @@ function dateConvert(str) {
   }
 
 function getSingleOrder(res,id,complete){
-    sql="SELECT Order_ID, Product_ID, OrderType, Amount, Price, Status, OrderDate, Seller_ID, Buyer_ID FROM Orders WHERE Order_ID = ?"
+    sql="SELECT Order_ID, Product_ID, OrderType, Amount, Price, OrderDate, Seller_ID, Buyer_ID FROM Orders WHERE Order_ID = ?"
     var inserts = [id];
 
     mysql.pool.query(sql,inserts,function(error, results, fields){
@@ -422,7 +422,7 @@ function getSingleOrder(res,id,complete){
 
 //Get Open Orders to populate the table on /OpenOrders
 function getOpenOrders(res, complete){
-    sql="SELECT Order_ID, Product_ID, OrderType, Amount, Price, Status, OrderDate, Seller_ID, Buyer_ID FROM Orders WHERE OrderType = 'Buy'";
+    sql="SELECT Order_ID, Product_ID, OrderType, Amount, Price, OrderDate, Seller_ID, Buyer_ID FROM Orders WHERE OrderType = 'Buy'";
     mysql.pool.query(sql, function (error,results,fields){
         if(error){
             res.write(JSON.stringify(error));
@@ -436,7 +436,7 @@ function getOpenOrders(res, complete){
 
 //Get Closed Orders to populate the table on /OpenOrders
 function getClosedOrders(res, complete){
-    sql="SELECT Order_ID, Product_ID, OrderType, Amount, Price, Status, OrderDate, Seller_ID, Buyer_ID FROM Orders WHERE OrderType = 'Sell'";
+	sql="SELECT Order_ID, Product_ID, OrderType, Amount, Price, OrderDate, Seller_ID, Buyer_ID FROM Orders WHERE OrderType = 'Sell'";
     mysql.pool.query(sql, function (error,results,fields){
         if(error){
             res.write(JSON.stringify(error));
