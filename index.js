@@ -455,8 +455,8 @@ function getDetails(res,Name,context,complete){
 			res.write(JSON.stringify(error));
 			res.end();
 		}
-		context = JSON.parse(JSON.stringify(results));
-		app.locals.ag_s = context;
+		//context = JSON.parse(JSON.stringify(results));
+		app.locals.ag_s = results;
 		complete();
 	});
 }
@@ -485,6 +485,7 @@ app.post('/create_order',function(req,res){
 	var context = {};
 	var Type = "";
 	var callCount = 0;
+	//console.log("req.body: ",req.body.agriculturalProduct);
 	if(req.body.OrderType == "Buyer"){
 		f_sql = "INSERT INTO Orders (Product_ID, OrderType,Amount,Price,OrderDate,Buyer_ID) VALUES (?,?,?,?,?,?)";
 		if(req.body.buyerName=="None"){res.redirect('/'); return;}
@@ -503,7 +504,7 @@ app.post('/create_order',function(req,res){
 		callCount++;
 		if(callCount >= 2){
 			if(app.locals.ag_s[0].Wholesale_Price == null){
-				app.locals.ag_s[0].Wholesale.Price = 0;
+				app.locals.ag_s[0].Wholesale_Price = 0;
 			}
 			mysql.pool.query(f_sql,[app.locals.ag_s[0].Product_ID,Type,req.body.OrderAmount,app.locals.ag_s[0].Wholesale_Price,req.body.date,app.locals.id[0].ID],function(error,results,fields){
 				if(error){
